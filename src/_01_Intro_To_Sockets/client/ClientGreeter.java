@@ -14,9 +14,9 @@ public class ClientGreeter {
       //3. Surround steps 4-9 in a try-catch block that catches any IOExceptions.
     try {
     	Socket sock = new Socket(ipAddress, port);
-    	DataOutputStream os = (DataOutputStream) sock.getOutputStream();
+    	DataOutputStream os = new DataOutputStream(sock.getOutputStream());
     	os.writeUTF("message");
-    	DataInputStream is = (DataInputStream) sock.getInputStream();
+    	DataInputStream is = new DataInputStream(sock.getInputStream());
     	System.out.println(is.readUTF());
     	sock.close();
     }

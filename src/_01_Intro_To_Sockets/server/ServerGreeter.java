@@ -16,6 +16,7 @@ public class ServerGreeter extends Thread {
 		//*OPTIONAL* you can set a time limit for the server to wait by using the 
 		//  ServerSocket's setSoTimeout(int timeInMilliSeconds) method
 		//ss.setSoTimeout(timeout);
+		System.out.println("started2");
 	}
 
 	public void run() {
@@ -23,12 +24,23 @@ public class ServerGreeter extends Thread {
 		boolean bool = true;
 		//4. Make a while loop that continues looping as long as the boolean created in the previous step is true.
 			while(bool)
-			{
+			{System.out.println("started3");
 				try {
+					System.out.println("started4");
 					JOptionPane.showMessageDialog(null, "waiting for client");
 					
 					Socket sock = ss.accept();
-					//ss = sock;
+					//TODO look at step 9 if this doesn't work
+					
+					JOptionPane.showMessageDialog(null, "client connected");
+					DataInputStream is = new DataInputStream(sock.getInputStream());
+					
+					System.out.println(is.readUTF());
+					
+					DataOutputStream os = new DataOutputStream(sock.getOutputStream());
+					 os.writeUTF("servertoclientmessage");
+					 os.close();
+					
 				}
 				catch(SocketTimeoutException e)
 				{
@@ -71,6 +83,13 @@ public class ServerGreeter extends Thread {
 
 	public static void main(String[] args) {
 		//16. In a new thread, create an object of the ServerGreeter class and start the thread. Don't forget the try-catch.
-		
+		try {
+			Thread t = new Thread(new ServerGreeter());
+			t.start();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("started6");
 	}
 }
