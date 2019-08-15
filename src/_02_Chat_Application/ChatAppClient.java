@@ -1,6 +1,7 @@
 package _02_Chat_Application;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -12,13 +13,21 @@ public class ChatAppClient {
 	String IP;
 	int port;
 	DataInputStream is;
+	DataOutputStream os;
 	ChatAppClient(String IP, int port)
 	{
 		this.IP = IP;
 		this.port = port;
 	}
-	public void sendClick()
+	public void sendClick(String text)
 	{
+		try {
+			os = new DataOutputStream(sock.getOutputStream());
+			os.writeUTF(text);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	public void start()
@@ -36,16 +45,12 @@ public class ChatAppClient {
 	}
 	public void checkText() throws InterruptedException
 	{
-		Thread next = new Thread(() -> {
-			try {
-				checkText();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-
-		
+		try {
+			text = is.readUTF();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void setApp(ChatApp app)
 	{
